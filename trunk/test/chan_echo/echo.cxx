@@ -13,6 +13,8 @@ extern struct ChannelDevice* device;
 //
 int initialize (const struct ast_channel_tech *tech , const char */*cfg*/)
 {
+    ast_log(LOG_NOTICE, "\n");
+
     try
     {
         std::auto_ptr<ChannelDevice> spDevice = std::auto_ptr<ChannelDevice>(new ChannelDevice_Echo(tech));
@@ -30,8 +32,12 @@ int initialize (const struct ast_channel_tech *tech , const char */*cfg*/)
     return NULL != device ? 1 : 0;
 }
 
-int uninitialize()
+int uninitialize(const struct ast_channel_tech *tech)
 {
+    ast_log(LOG_NOTICE, "\n");
+
+    ::ast_channel_unregister(tech);
+    
     if(device) {
         delete device;
         device = NULL;
@@ -44,6 +50,8 @@ int uninitialize()
 //
 struct ast_channel * ChannelDevice_Echo::request_channel(const char */*type*/, int /*format*/, void */*data*/, int */*cause*/)
 {
+    ast_log(LOG_NOTICE, "\n");
+
     std::auto_ptr<Channel> spChannel = std::auto_ptr<Channel>(new Channel_Echo(_tech));
     struct ast_channel* tmp = spChannel->get_channel();
     ast_log(LOG_DEBUG, "tmp = %p", tmp);
@@ -102,6 +110,8 @@ Channel_Echo::Channel_Echo(const struct ast_channel_tech* tech)
 
 Channel_Echo::~Channel_Echo()
 {
+    ast_log(LOG_NOTICE, "\n");
+
     ::close(_pipefds[0]);
     ::close(_pipefds[1]);
 }
