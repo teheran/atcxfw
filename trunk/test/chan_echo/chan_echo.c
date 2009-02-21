@@ -5,8 +5,6 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revision: $")
 #include "asterisk/module.h"
 #include "echo.h"
 
-static struct ChannelDevice *device = NULL;
-
 static const struct ast_channel_tech tech = {
 	.type         = "ABC",
 	.description  = "ABC Channel driver",
@@ -22,21 +20,21 @@ static const struct ast_channel_tech tech = {
 
 static int load_module(void)
 {
-    return device = create_device(&tech, NULL) 
+//    assert(NULL == device);
+
+    return initialize(&tech, NULL) 
             ? AST_MODULE_LOAD_SUCCESS 
             : AST_MODULE_LOAD_FAILURE;
 }
 
 static int unload_module(void)
 {
-    return device = release_device(device) 
+    return uninitialize() 
             ? AST_MODULE_LOAD_FAILURE
             : AST_MODULE_LOAD_SUCCESS;
 }
 
-AST_MODULE_INFO(ASTERISK_GPL_KEY, 
-                AST_MODFLAG_DEFAULT, 
-                "Channel implements echo as simple as possible",
+AST_MODULE_INFO(ASTERISK_GPL_KEY, AST_MODFLAG_DEFAULT, "Channel implements echo as simple as possible",
                 .load = load_module,
                 .unload = unload_module,
                ); 
