@@ -51,11 +51,11 @@ extern "C" {
 
     int 
         initialize
-            (const struct ast_channel_tech *tech , const char *cfg);
+            (const struct ast_channel_tech *tech, const char *cfg);
 
     int 
         uninitialize
-	    	(void);
+	    	(const struct ast_channel_tech *tech);
 
 #ifdef __cplusplus
 }

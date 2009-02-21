@@ -10,7 +10,7 @@ static const struct ast_channel_tech tech = {
 	.description  = "ABC Channel driver",
 	.capabilities = AST_FORMAT_ULAW | AST_FORMAT_ALAW,
 	.requester    = device_dispatch_request,
-	.devicestate  = device_dispatch_devicestate,
+//	.devicestate  = device_dispatch_devicestate,
 	.call         = channel_dispatch_call,
 	.hangup       = channel_dispatch_hangup,
 	.read         = channel_dispatch_read,
@@ -29,9 +29,8 @@ static int load_module(void)
 
 static int unload_module(void)
 {
-    return uninitialize() 
-            ? AST_MODULE_LOAD_FAILURE
-            : AST_MODULE_LOAD_SUCCESS;
+    uninitialize(&tech); 
+    return 0;
 }
 
 AST_MODULE_INFO(ASTERISK_GPL_KEY, AST_MODFLAG_DEFAULT, "Channel implements echo as simple as possible",
