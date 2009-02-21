@@ -3,7 +3,10 @@
 
 #include "asterisk/module.h"
 
+extern "C"
+{
 extern struct ChannelDevice* device;
+}
 
 //
 //  ChannelDevice adapters impl
@@ -43,6 +46,7 @@ struct ast_channel * ChannelDevice_Echo::request_channel(const char */*type*/, i
 {
     std::auto_ptr<Channel> spChannel = std::auto_ptr<Channel>(new Channel_Echo(_tech));
     struct ast_channel* tmp = spChannel->get_channel();
+    ast_log(LOG_DEBUG, "tmp = %p", tmp);
     spChannel.release();
     return tmp;
 }
@@ -90,6 +94,10 @@ Channel_Echo::Channel_Echo(const struct ast_channel_tech* tech)
     ::pipe(_pipefds);
     tmp->fds[0] = _pipefds[0];
     tmp->fds[1] = _pipefds[1];
+
+    _channel = tmp;    
+    ast_log(LOG_DEBUG, "Well done\n");
+    
 }
 
 Channel_Echo::~Channel_Echo()

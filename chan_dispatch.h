@@ -124,6 +124,7 @@ int
     class Channel
     {
     public:
+        Channel();
         virtual ~Channel() {}
         virtual int send_digit_begin (char digit);
         virtual int send_digit_end (char digit, unsigned int duration);

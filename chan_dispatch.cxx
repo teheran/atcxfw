@@ -6,10 +6,11 @@ extern "C" {
 
 #include "chan_dispatch.h"
 
-static struct ChannelDevice *device = NULL;
+struct ChannelDevice *device = NULL;
 
 struct ast_channel *device_dispatch_request(const char *type, int format, void *data, int *cause)
 {
+   ast_log(LOG_DEBUG, " ");
    return device
        ? device->request_channel(type, format, data, cause)
        : NULL; // is not initialized
@@ -17,6 +18,7 @@ struct ast_channel *device_dispatch_request(const char *type, int format, void *
 
 int device_dispatch_devicestate(void *data)
 {
+    ast_log(LOG_DEBUG, " ");
     return device
         ? device->get_state(data)
         : AST_DEVICE_INVALID; // is not initialized
@@ -25,6 +27,7 @@ int device_dispatch_devicestate(void *data)
 
 Channel* get_channel_pvt(struct ast_channel *chan)
 {
+    ast_log(LOG_DEBUG, " ");
     return 
         (chan && chan->tech_pvt) 
             ? static_cast<Channel*>(chan->tech_pvt)
@@ -35,6 +38,7 @@ int
     channel_dispatch_send_digit_begin
         (struct ast_channel *chan, char digit)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->send_digit_begin(digit) : -1;
 }
@@ -43,6 +47,7 @@ int
     channel_dispatch_send_digit_end
         (struct ast_channel *chan, char digit, unsigned int duration)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->send_digit_end(digit, duration) : -1;
 }
@@ -51,6 +56,7 @@ int
 	channel_dispatch_call
 		(struct ast_channel *chan, char *addr, int timeout)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->call(addr, timeout) : -1;
 }
@@ -59,6 +65,7 @@ int
     channel_dispatch_hangup
         (struct ast_channel *chan)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     int ret = tmp ? tmp->hangup() : -1;
 
@@ -74,6 +81,7 @@ int
     channel_dispatch_answer
         (struct ast_channel *chan)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->answer() : -1;
 }
@@ -82,6 +90,7 @@ struct ast_frame *
     channel_dispatch_read
         (struct ast_channel *chan)
 {
+//    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->read() : NULL;
 }
@@ -90,6 +99,7 @@ int
     channel_dispatch_write
         (struct ast_channel *chan, struct ast_frame *frame)
 {
+//    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->write(frame) : -1;
 }
@@ -98,6 +108,7 @@ int
     channel_dispatch_send_text
         (struct ast_channel *chan, const char *text)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->send_text(text) : -1;
 }
@@ -106,6 +117,7 @@ int
     channel_dispatch_send_image
         (struct ast_channel *chan, struct ast_frame *frame)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->send_image(frame) : -1;
 }
@@ -114,6 +126,7 @@ int
     channel_dispatch_send_html
         (struct ast_channel *chan, int subclass, const char *data, int len)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->send_html(subclass, data, len) : -1;
 }
@@ -123,6 +136,7 @@ struct ast_frame *
     channel_dispatch_exception
         (struct ast_channel *chan)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->exception() : NULL;
 }
@@ -132,6 +146,8 @@ enum ast_bridge_result
     channel_dispatch_bridge
         (struct ast_channel *c0, struct ast_channel *c1, int flags, struct ast_frame **fo, struct ast_channel **rc, int timeoutms)
 {
+    ast_log(LOG_DEBUG, " ");
+
 /*  TODO
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->brige() : -1;
@@ -143,6 +159,7 @@ int
     channel_dispatch_indicate
         (struct ast_channel *chan, int condition, const void *data, size_t datalen)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->indicate(condition, data, datalen) : -1;
 }
@@ -152,6 +169,7 @@ int
     channel_dispatch_fixup
         (struct ast_channel *oldchan, struct ast_channel *newchan)
 {
+    ast_log(LOG_DEBUG, " ");
 /*  TODO
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->fixup(digit) : -1;
@@ -164,6 +182,7 @@ int
     channel_dispatch_setoption
         (struct ast_channel *chan, int option, void *data, int datalen)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->setoption(option, data, datalen) : -1;
 }
@@ -173,6 +192,7 @@ int
     channel_dispatch_queryoption
         (struct ast_channel *chan, int option, void *data, int *datalen)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->queryoption(option, data, datalen) : -1;
 }
@@ -182,6 +202,7 @@ int
     channel_dispatch_transfer
         (struct ast_channel *chan, const char *newdest)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->transfer(newdest) : -1;
 }
@@ -191,6 +212,7 @@ int
     channel_dispatch_write_video
         (struct ast_channel *chan, struct ast_frame *frame)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->write_video(frame) : -1;
 }
@@ -209,6 +231,7 @@ int
     channel_dispatch_func_channel_read
         (struct ast_channel *chan, char *function, char *data, char *buf, size_t len)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->func_channel_read(function, data, buf, len) : -1;
 }
@@ -217,6 +240,7 @@ int
     channel_dispatch_func_channel_write
         (struct ast_channel *chan, char *function, char *data, const char *value)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->func_channel_write(function, data, value) : -1;
 }
@@ -226,6 +250,7 @@ struct ast_channel*
     channel_dispatch_get_base_channel
         (struct ast_channel *chan)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->get_base_channel() : NULL;
 }
@@ -235,72 +260,87 @@ int
     channel_dispatch_set_base_channel
         (struct ast_channel *chan, struct ast_channel *base)
 {
+    ast_log(LOG_DEBUG, " ");
     Channel* tmp = get_channel_pvt(chan);
     return  tmp ? tmp->set_base_channel(base) : -1;
 }
 
+Channel::Channel()
+  : _channel(NULL)
+{ /* */ }
 
 int Channel::send_digit_begin (char digit)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 int Channel::send_digit_end (char digit, unsigned int duration)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::call (char *addr, int timeout)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::hangup ()
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::answer ()
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 struct ast_frame * Channel::read ()
 {
+    ast_log(LOG_DEBUG, " ");
     return NULL;
 }
 
 
 int Channel::write (struct ast_frame *frame)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::send_text (const char *text)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::send_image (struct ast_frame *frame)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::send_html (int subclass, const char *data, int len)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 struct ast_frame * Channel::exception ()
 {
+    ast_log(LOG_DEBUG, " ");
     return NULL;
 }
 
@@ -308,6 +348,7 @@ struct ast_frame * Channel::exception ()
 //	enum ast_bridge_result Channel::bridge (struct ast_channel *c0, struct ast_channel *c1, int flags, struct ast_frame **fo, struct ast_channel **rc, int timeoutms)
 int Channel::indicate (int condition, const void *data, size_t datalen)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
@@ -315,69 +356,82 @@ int Channel::indicate (int condition, const void *data, size_t datalen)
 //	int fixup (struct ast_channel *oldchan, struct ast_channel *newchan)
 int Channel::setoption (int option, void *data, int datalen)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::queryoption (int option, void *data, int *datalen)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::transfer (const char *newdest)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::write_video (struct ast_frame *frame)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 struct ast_channel * Channel::bridged_channel (struct ast_channel *bridge)
 {
+    ast_log(LOG_DEBUG, " ");
     return NULL;
 }
 
 
 int Channel::func_channel_read (char *function, char *data, char *buf, size_t len)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 int Channel::func_channel_write (char *function, char *data, const char *value)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 
 struct ast_channel* Channel::get_base_channel ()
 {
+    ast_log(LOG_DEBUG, " ");
     return NULL;
 }
 
 
 int Channel::set_base_channel (struct ast_channel *base)
 {
+    ast_log(LOG_DEBUG, " ");
     return -1;
 }
 
 struct ast_channel* Channel::get_channel()
 {
+    ast_log(LOG_DEBUG, " ");
     return _channel;
 }
 
 
 ChannelDevice::ChannelDevice(const struct ast_channel_tech *tech) 
-    : _tech(tech) { /* */ }
+    : _tech(tech) 
+{ 
+    ast_log(LOG_DEBUG, " ");
+}
 
 void ChannelDevice::release_channel(Channel*)
 {
-    
+    ast_log(LOG_DEBUG, " ");
 }
 
 
