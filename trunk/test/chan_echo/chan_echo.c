@@ -6,11 +6,10 @@ ASTERISK_FILE_VERSION(__FILE__, "$Revision: $")
 #include "echo.h"
 
 static const struct ast_channel_tech tech = {
-	.type         = "ABC",
-	.description  = "ABC Channel driver",
+	.type         = "Echo",
+	.description  = "Echo Channel driver",
 	.capabilities = AST_FORMAT_ULAW | AST_FORMAT_ALAW,
 	.requester    = device_dispatch_request,
-//	.devicestate  = device_dispatch_devicestate,
 	.call         = channel_dispatch_call,
 	.hangup       = channel_dispatch_hangup,
 	.read         = channel_dispatch_read,
@@ -20,8 +19,6 @@ static const struct ast_channel_tech tech = {
 
 static int load_module(void)
 {
-//    assert(NULL == device);
-
     return initialize(&tech, NULL) 
             ? AST_MODULE_LOAD_SUCCESS 
             : AST_MODULE_LOAD_FAILURE;
@@ -33,7 +30,7 @@ static int unload_module(void)
     return 0;
 }
 
-AST_MODULE_INFO(ASTERISK_GPL_KEY, AST_MODFLAG_DEFAULT, "Channel implements echo as simple as possible",
+AST_MODULE_INFO(ASTERISK_GPL_KEY, AST_MODFLAG_DEFAULT, "Implements echo as simple as possible",
                 .load = load_module,
                 .unload = unload_module,
                ); 

@@ -13,7 +13,7 @@ extern struct ChannelDevice* device;
 //
 int initialize (const struct ast_channel_tech *tech , const char */*cfg*/)
 {
-    ast_log(LOG_NOTICE, "\n");
+    ast_log(LOG_DEBUG, "\n");
 
     try
     {
@@ -34,7 +34,7 @@ int initialize (const struct ast_channel_tech *tech , const char */*cfg*/)
 
 int uninitialize(const struct ast_channel_tech *tech)
 {
-    ast_log(LOG_NOTICE, "\n");
+    ast_log(LOG_DEBUG, "\n");
 
     ::ast_channel_unregister(tech);
     
@@ -50,7 +50,7 @@ int uninitialize(const struct ast_channel_tech *tech)
 //
 struct ast_channel * ChannelDevice_Echo::request_channel(const char */*type*/, int /*format*/, void */*data*/, int */*cause*/)
 {
-    ast_log(LOG_NOTICE, "\n");
+    ast_log(LOG_DEBUG, "\n");
 
     std::auto_ptr<Channel> spChannel = std::auto_ptr<Channel>(new Channel_Echo(_tech));
     struct ast_channel* tmp = spChannel->get_channel();
@@ -61,7 +61,7 @@ struct ast_channel * ChannelDevice_Echo::request_channel(const char */*type*/, i
 
 int ChannelDevice_Echo::get_state(void *data)
 {
-    ast_log(LOG_NOTICE, "\n");
+    ast_log(LOG_DEBUG, "\n");
 
     return -1; //AST_DEVICE_INUSE;
 }
@@ -71,7 +71,7 @@ int ChannelDevice_Echo::get_state(void *data)
 //
 Channel_Echo::Channel_Echo(const struct ast_channel_tech* tech)
 {
-    ast_log(LOG_NOTICE, "\n");
+    ast_log(LOG_DEBUG, "\n");
 
     struct ast_channel *tmp = NULL;
     tmp = ast_channel_alloc(0, /* do we need a queue; for why? */
@@ -110,7 +110,7 @@ Channel_Echo::Channel_Echo(const struct ast_channel_tech* tech)
 
 Channel_Echo::~Channel_Echo()
 {
-    ast_log(LOG_NOTICE, "\n");
+    ast_log(LOG_DEBUG, "\n");
 
     ::close(_pipefds[0]);
     ::close(_pipefds[1]);
