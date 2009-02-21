@@ -11,6 +11,15 @@ extern "C" {
 
 #include "asterisk/channel.h"
 
+struct ast_channel *
+    device_dispatch_request
+        (const char *type, int format, void *data, int *cause);
+
+int 
+    device_dispatch_devicestate
+        (void *data);
+
+
 int 
 	channel_dispatch_send_digit_begin
 		(struct ast_channel *chan, char digit);
@@ -139,6 +148,8 @@ int
         virtual int func_channel_write (char *function, char *data, const char *value);
         virtual struct ast_channel* get_base_channel ();
         virtual int set_base_channel (struct ast_channel *base);
+
+        struct ast_channel * get_channel();
     protected:
         struct ast_channel * _channel;
     };
@@ -158,9 +169,10 @@ int
         virtual int load_config(const char *cfg) {return 1;}
         virtual struct ast_channel * request_channel(const char *type, int format, void *data, int *cause) = 0;
 
-        virtual void release_channel(Channel*) = 0;
+        virtual void release_channel(Channel*);
 
 	    virtual int get_state(void *data) = 0;
+
     protected:
         const struct ast_channel_tech *_tech;
     };
@@ -168,24 +180,6 @@ int
     typedef struct ChannelDevice ChannelDevice;
 #endif
 
-//
-//	Channel device dispatchers
-//
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-	struct ast_channel *
-        request_channel
-            (struct ChannelDevice *dev, const char *type, int format, void *data, int *cause);
-
-    int 
-        get_device_state
-            (struct ChannelDevice *dev, void *data);
-
-#ifdef __cplusplus
-}
-#endif
 
     
 #endif /*CHAN_DISPATCH*/

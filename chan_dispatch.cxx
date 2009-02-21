@@ -6,19 +6,20 @@ extern "C" {
 
 #include "chan_dispatch.h"
 
+static struct ChannelDevice *device = NULL;
 
-struct ast_channel *request_channel(struct ChannelDevice *dev, const char *type, int format, void *data, int *cause)
+struct ast_channel *device_dispatch_request(const char *type, int format, void *data, int *cause)
 {
-   return dev
-       ? dev->request_channel(type, format, data, cause)
-       : NULL;
+   return device
+       ? device->request_channel(type, format, data, cause)
+       : NULL; // is not initialized
 }
 
-int get_device_state(struct ChannelDevice *dev, void *data)
+int device_dispatch_devicestate(void *data)
 {
-    return dev 
-        ? dev->get_state(data)
-        : AST_DEVICE_INVALID;
+    return device
+        ? device->get_state(data)
+        : AST_DEVICE_INVALID; // is not initialized
 }
 
 
@@ -365,10 +366,19 @@ int Channel::set_base_channel (struct ast_channel *base)
     return -1;
 }
 
+struct ast_channel* Channel::get_channel()
+{
+    return _channel;
+}
+
 
 ChannelDevice::ChannelDevice(const struct ast_channel_tech *tech) 
     : _tech(tech) { /* */ }
 
+void ChannelDevice::release_channel(Channel*)
+{
+    
+}
 
 
 
